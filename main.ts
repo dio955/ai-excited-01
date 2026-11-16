@@ -1,15 +1,14 @@
-// ai-excited-01 — copies the entry image to /output/entry.png, byte-identical.
-// Deterministic: no timestamps, no randomness, no network. The output depends
-// only on entry.png, so two runs always produce the same bytes.
+// ai-excited-01 entry: copy entry.png to /output/entry.png, byte for byte.
+// Deterministic: the same input always produces the same output.
+// Node 22, standard library only, no network.
 import { copyFileSync, mkdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const scriptDir = dirname(fileURLToPath(import.meta.url));
-const source = join(scriptDir, "entry.png");
-const outDir = process.env.OUTPUT_DIR || "/output";
-const target = join(outDir, "entry.png");
+const here = dirname(fileURLToPath(import.meta.url));
+const source = join(here, "entry.png");
+const outputDir = process.env.OUTPUT_DIR ?? "/output";
+const target = join(outputDir, "entry.png");
 
-mkdirSync(outDir, { recursive: true });
+mkdirSync(outputDir, { recursive: true });
 copyFileSync(source, target);
-console.log(`Wrote ${target}`);
